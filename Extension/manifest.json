@@ -19,6 +19,6 @@
     },
     "action": {
         "default_popup": "index.html",
-        "default_title": "Ordbok"
+        "default_title": "Svensk ordbok"
     }
 }

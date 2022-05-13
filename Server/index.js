@@ -35,7 +35,13 @@ app.post('/api', function (req, res) {
             await driver.get("https://svenska.se/")
             await driver.findElement(By.id("seeker")).sendKeys(req.body.sökord)
             await driver.findElement(By.css(".knapp > img")).click()
-            betydelse = await driver.findElement(By.xpath("/html/body / div[1] / div[3] / div / div / article / section / div / div / div[2] / div / div / div / div / div[1] / div / div[2] / div / div[4] / div[1] / span[1]")).getText()
+            console.log(await driver.findElements(By.xpath("/html/body/div[1]/div[3]/div/div/article/section/div/div/div[2]/div/div/div/div/div[1]/div/div[2]/div/div[4]/div[1]/span[1]")))
+            if (await driver.findElements(By.xpath("/html/body/div[1]/div[3]/div/div/article/section/div/div/div[2]/div/div/div/div/div[1]/div/div[2]/div/div[4]/div[1]/span[1]")) != "") {
+                betydelse = await driver.findElement(By.xpath("/html/body/div[1]/div[3]/div/div/article/section/div/div/div[2]/div/div/div/div/div[1]/div/div[2]/div/div[4]/div[1]/span[1]")).getText()
+            } else {
+                await driver.findElement(By.css("#so-1 > div.cshow > a:nth-child(1)")).click()
+                betydelse = await driver.findElement(By.xpath("/html/body/div[1]/div[3]/div/div/article/section/div/div/div[2]/div/div/div/div/div[1]/div[2]/div/div[4]")).getText()
+            }
             console.log(betydelse)
             res.send(betydelse)
             await driver.close()
