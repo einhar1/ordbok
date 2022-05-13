@@ -11,7 +11,8 @@
     "author": "Einar Harri",
     "permissions": [
         "contextMenus",
-        "notifications"
+        "notifications",
+        "tabs"
     ],
     "background": {
         "service_worker": "contextMenu.js"
