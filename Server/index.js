@@ -16,7 +16,6 @@ app.use(express.json({ type: '*/*' }));
 app.use(cors());
 app.use(express.static(`${__dirname}/public`));
 
-var betydelse;
 const screen = {
     width: 640,
     height: 480
@@ -31,23 +30,46 @@ app.post('/api', function (req, res) {
             .setChromeOptions(new chrome.Options().headless().windowSize(screen))
             .build()
 
+            var betydelse;
+            var titel;
+
             console.log(req.body.sökord)
             await driver.get("https://svenska.se/")
             await driver.findElement(By.id("seeker")).sendKeys(req.body.sökord)
             await driver.findElement(By.css(".knapp > img")).click()
-            console.log(await driver.findElements(By.xpath("/html/body/div[1]/div[3]/div/div/article/section/div/div/div[2]/div/div/div/div/div[1]/div/div[2]/div/div[4]/div[1]/span[1]")))
             if (await driver.findElements(By.xpath("/html/body/div[1]/div[3]/div/div/article/section/div/div/div[2]/div/div/div/div/div[1]/div/div[2]/div/div[4]/div[1]/span[1]")) != "") {
                 betydelse = await driver.findElement(By.xpath("/html/body/div[1]/div[3]/div/div/article/section/div/div/div[2]/div/div/div/div/div[1]/div/div[2]/div/div[4]/div[1]/span[1]")).getText()
+                titel = req.body.sökord;
+            } else if (await driver.findElements(By.css("#so-1 > div.cshow > a:nth-child(1)")) != "") {
+                let btn = await driver.findElement(By.css("#so-1 > div.cshow > a:nth-child(1)"))
+                await btn.click()
+                titel = await btn.getText()
+                let text = await driver.wait(until.elementLocated(By.xpath("/html/body/div[1]/div[3]/div/div/article/section/div/div/div[2]/div/div/div/div/div[1]/div[2]/div/div[4]")), 500)
+                betydelse = await text.getText()
             } else {
-                await driver.findElement(By.css("#so-1 > div.cshow > a:nth-child(1)")).click()
-                betydelse = await driver.findElement(By.xpath("/html/body/div[1]/div[3]/div/div/article/section/div/div/div[2]/div/div/div/div/div[1]/div[2]/div/div[4]")).getText()
+                let btn = await driver.wait(until.elementLocated(By.css("#so-1 > div.cshow > a:nth-child(6)")), 500)
+                await btn.click()
+                titel = await btn.getText()
+                try {
+                    let text = await driver.wait(until.elementLocated(By.xpath("/html/body/div[1]/div[3]/div/div/article/section/div/div/div[2]/div/div/div/div/div[1]/div/div[2]/div/div[4]")), 500)
+                    betydelse = await text.getText()
+                } catch (error) {
+                    console.log(error)
+                    let btn = await driver.findElement(By.css("#so-1 > div.cshow > a:nth-child(1)"))
+                    await btn.click()
+                    titel = await btn.getText()
+                    let text = await driver.wait(until.elementLocated(By.xpath("/html/body/div[1]/div[3]/div/div/article/section/div/div/div[2]/div/div/div/div/div[1]/div[2]/div/div[4]")), 500)
+                    betydelse = await text.getText()
+                }
             }
-            console.log(betydelse)
-            res.send(betydelse)
+            const content = {"betydelse": betydelse, "titel": titel}
+            console.log(content)
+            res.send(content)
             await driver.close()
+            await driver.quit()
         } catch (error) {
             console.log(error)
-            res.send("Något gick fel")
+            res.send({ "betydelse": "", "titel": "Något gick fel" })
         }
     })();
     
