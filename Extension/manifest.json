@@ -15,7 +15,7 @@
         "tabs"
     ],
     "background": {
-        "service_worker": "contextMenu.js"
+        "service_worker": "script.js"
     },
     "action": {
         "default_popup": "index.html",
