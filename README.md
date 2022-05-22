@@ -6,4 +6,4 @@ För att se ordets definition på direkt på wiktionarys hemsida klickar du på 
 
 OBS! Det här tillägget översätter inte ord, utan ger endast tillbaka definitionen av ordet på svenska.
 
-**_Koden är inte helt färdig än, men så fort den är det kommer jag att publicera en länk chrome web store listningen här._**
+Länk till tillägget på Chrome Web Store: https://chrome.google.com/webstore/detail/fmbldghfmcoibgafcmkiddiajkbelkbk
