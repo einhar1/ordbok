@@ -1,0 +1,106 @@
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.logo {
+    background: url('img/css_sprites.png') -10px -10px;
+}
+.checkmark {
+    background: url('img/css_sprites.png') -79px -10px;
+}
+header {
+    overflow: hidden;
+    padding: 10px;
+    height: 49px;
+    box-sizing: content-box;
+}
+header a {
+    color: white;
+    text-align: center;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 25px;
+    border-radius: 8px;
+    margin-right: 10px;
+    float: right;
+}
+header a:hover {
+    background-color: rgba(0, 0, 0, 0.14);
+    color: white;
+}
+header img {
+    margin-left: 10px;
+}
+section#front {
+    height: 75vh;
+    background-image: url("img/frontbanner6.png");
+    background-repeat: no-repeat;
+    background-position: 50% 25%;
+    background-size: contain;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+}
+section a.btn-lg {
+    margin-bottom: 6%;
+}
+#container {
+    background-image: linear-gradient(#7182ab, #dae4e6 41%, #8397c7);
+}
+section#front2 {
+    text-align: center;
+    padding-bottom: 50px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+p#cursive {
+    margin-top: 40px;
+    margin-bottom: 7px;
+    font-style: italic;
+    font-size: 24px;
+}
+p#big {
+    font-size: 28px;
+    font-weight: 630;
+    margin-bottom: 26px;
+}
+section#front2 img {
+    margin-right: 2px;
+}
+p.list {
+    display: inline;
+    font-size: 21px;
+    line-height: 45px;
+}
+section#about {
+    text-align: center;
+}
+h2 {
+    background-image: linear-gradient(#7e8fb5, #96a6cd);
+    padding: 14px 0;
+    border-top: 3px solid #6e767e;
+    border-bottom: 3px solid #6e767e;
+}
+p#text {
+    font-size: 18px;
+    margin: 30px 30px;
+    text-align: left;
+}
+a#btn2 {
+    margin-bottom: 30px;
+}
+footer {
+    background-color: #cdcdcd;
+    padding: 5px 5px 30px 5px;
+}
+footer a {
+    /*Jag var tvungen att ändra färgen på länken för att kontrasten skulle bli tillräckligt stor*/
+    color: #00008a;
+}
+@media screen and (max-width: 600px) {
+    section#front {
+        background-image: url("img/frontbanner4.png");
+        background-size: 90%;
+    }
+}

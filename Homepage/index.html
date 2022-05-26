@@ -4,9 +4,64 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ett chrome-tillägg för dig som vill kunna få reda på betydelser av ord i texten utan att lämna sidan.">
+    <link rel="icon" href="img/icon_medium.png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <title>Svensk Ordbok för Chrome</title>
 </head>
 <body>
-    
+    <div id="container">
+        <header>
+            <!-- html och css i header delvis hämtad från w3schools.com -->
+            <img class="logo" src="img/transparent.png" alt="logo" height="49px" width="49px">
+            <a href="#contact">Kontakt</a>
+            <a href="#about">Om tillägget</a>
+        </header>
+        <section id="front">
+            <a class="btn btn-primary btn-lg" href="https://chrome.google.com/webstore/detail/fmbldghfmcoibgafcmkiddiajkbelkbk" role="button">INSTALLERA NU</a>
+        </section>
+    </div>
+    <section id="front2">
+        <p id="cursive">Ett chrome-tillägg för dig som vill kunna</p>
+
+        <p id="big">Slå upp ord snabbare</p>
+        
+        <img class="checkmark" src="img/transparent.png" alt="checkmark" height="20px" width="23px">
+        <p class="list">Komplett ordbok direkt i webläsaren</p><br>
+        
+        <img class="checkmark" src="img/transparent.png" alt="checkmark" height="20px" width="23px">
+        <p class="list">Sök i fritext eller genom att markera ord i texten</p><br>
+        
+        <img class="checkmark" src="img/transparent.png" alt="checkmark" height="20px" width="23px">
+        <p class="list">Betydelser och definitioner från Wiktionary</p><br>
+    </section>
+    <section id="about">
+        <h2>Om tillägget</h2>
+        <p id="text">
+            Har du någonsin varit inne på en hemsida och stött på ett ord du inte känner igen? Kanske har du 
+            googlat på ordet för att få reda på vad det betyder eller letat upp det i en fysisk ordbok. Då är det här tillägget 
+            något för dig. Från och med nu behöver du inte längre lämna sidan du är inne på för att få reda på vad ett 
+            ord betyder. Bara genom några knapptryck kan du få fram betydelsen av vilket ord som helst.
+            <br><br>
+            Tillägg i chrome är en slags plugin-program som laddas ner från Chrome Web Store. Det här tillägget låter 
+            dig markera ord på websidor och få tillbaka ordets definition från wiktionary (en ordbok). Det går
+            även att söka på ord i fritext om du klickar på tillägget. Ordet måste vara i sin grundform för att tillägget ska
+            fungera. För att se ordets definition på direkt på wiktionarys hemsida klickar du på aviseringen som kommer upp när du sökt på
+            något.
+            <br><br>
+            OBS! För att tillägget ska fungera måste aviseringar vara påslaget för chrome i windowsinställningarna.
+        </p>
+        <a class="btn btn-primary" id="btn2" href="https://chrome.google.com/webstore/detail/fmbldghfmcoibgafcmkiddiajkbelkbk" role="button">INSTALLERA NU</a>
+    </section>
+    <footer id="contact">
+        Om du har några frågor eller har hittat ett fel går det bra att använda kontaktformuläret på 
+        <a href="https://chrome.google.com/webstore/detail/fmbldghfmcoibgafcmkiddiajkbelkbk">Chrome Web Store</a> 
+        som finns under fliken support.
+    </footer>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+    crossorigin="anonymous"></script>
 </html>
