@@ -1,5 +1,7 @@
+//känn av när formuläret submittas
 $(document).on('submit', '#form', function () {
 
-    chrome.runtime.sendMessage({ sökord: document.getElementById("exampleFormControlInput1").value });
+    //skicka vidare sökordet till servern
+    chrome.runtime.sendMessage({ sokord: document.getElementById("exampleFormControlInput1").value });
     
 });
