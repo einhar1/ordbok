@@ -44,7 +44,7 @@ function apiRequest(input) {
 
     chrome.notifications.clear("betydelse");
 
-    fetch("https://sv.wiktionary.org/w/api.php?action=query&prop=extracts&titles=" + input + "&exchars=300&format=json&origin=*", {
+    fetch("https://sv.wiktionary.org/w/api.php?action=query&prop=extracts&titles=" + strtolower(input) + "&exchars=300&format=json&origin=*", {
         method: "POST"
     })
         .then((response) => response.json())
