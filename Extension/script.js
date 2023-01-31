@@ -4,8 +4,8 @@ var sokord;
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
     if (info.menuItemId == "search") {
         console.log(info.selectionText);
-        sokord = info.selectionText;
-        apiRequest(info.selectionText);
+        sokord = info.selectionText.toLowerCase();
+        apiRequest(info.selectionText.toLowerCase());
     }
 });
 
@@ -13,8 +13,8 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
 chrome.runtime.onMessage.addListener(
     function (request) {
         console.log("Input:" + request.sokord);
-        sokord = request.sokord;
-        apiRequest(request.sokord);
+        sokord = request.sokord.toLowerCase();
+        apiRequest(request.sokord.toLowerCase());
     }
 );
 
@@ -44,7 +44,7 @@ function apiRequest(input) {
 
     chrome.notifications.clear("betydelse");
 
-    fetch("https://sv.wiktionary.org/w/api.php?action=query&prop=extracts&titles=" + input.toLowerCase() + "&exchars=300&format=json&origin=*", {
+    fetch("https://sv.wiktionary.org/w/api.php?action=query&prop=extracts&titles=" + input + "&exchars=300&format=json&origin=*", {
         method: "POST"
     })
         .then((response) => response.json())
