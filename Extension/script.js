@@ -5,7 +5,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
     if (info.menuItemId == "search") {
         console.log(info.selectionText);
         sokord = info.selectionText.toLowerCase();
-        apiRequest(info.selectionText.toLowerCase());
+        apiRequest(info.selectionText.toLowerCase(), "context");
     }
 });
 
@@ -14,10 +14,10 @@ chrome.runtime.onMessage.addListener(
     function (request) {
         console.log("Input:" + request.sokord);
         sokord = request.sokord.toLowerCase();
-        apiRequest(request.sokord.toLowerCase());
+        apiRequest(request.sokord.toLowerCase(), "popup");
     }
 );
-
+/*
 //lyssna efter klickningar på notifikationen
 chrome.notifications.onClicked.addListener(
     function () {
@@ -38,11 +38,9 @@ chrome.notifications.onClicked.addListener(
         });
     }
 );
-
+*/
 //gör en request till API:n med sökordet och få tillbaka definitionen
-function apiRequest(input) {
-
-    chrome.notifications.clear("betydelse");
+function apiRequest(input, source) {
 
     fetch("https://sv.wiktionary.org/w/api.php?action=query&prop=extracts&titles=" + input + "&exchars=300&format=json&origin=*", {
         method: "POST"
@@ -70,26 +68,29 @@ function apiRequest(input) {
             extract = extract.replace(/<i>.*<\/i>/, "");
             extract = extract.substring(0, extract.indexOf("<"));
 
-            //skapa notifikationen
-            chrome.notifications.create("betydelse", {
-                type: "basic",
-                iconUrl: "icons/icon_large.png",
-                title: title,
-                message: extract,
-                requireInteraction: true,
-                priority: 2,
-                silent: true
-            });
+            if (source == "context") {
+                const url = chrome.runtime.getURL("result.html") + "?extract=" + encodeURIComponent(extract) + "&header=" + encodeURIComponent(input);
+                chrome.windows.create({ 
+                    url: url,
+                    type: "popup",
+                    width: 350,
+                    height: parseInt(extract.length * 0.5 + 100) 
+                });
+            } else if (source == "popup") {
+                chrome.runtime.sendMessage({
+                    type: "result",
+                    title: title,
+                    message: extract
+                });
+            }
         })
         .catch((error) => {
             console.error("Error:", error);
-            chrome.notifications.create("betydelse", {
-                type: "basic",
-                iconUrl: "icons/icon_large.png",
-                title: "Något gick fel",
-                message: "",
-                priority: 2
-            })
+            chrome.runtime.sendMessage({
+                type: "result",
+                title: "Fel vid sökning",
+                message: "Inga sökresultat."
+            });
         });
 }
 

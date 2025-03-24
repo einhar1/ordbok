@@ -5,3 +5,11 @@ $(document).on('submit', '#form', function () {
     chrome.runtime.sendMessage({ sokord: document.getElementById("exampleFormControlInput1").value });
     
 });
+
+// Lyssna på meddelanden från bakgrundsskriptet
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.type === "result") {
+        document.getElementById("result").innerHTML =
+            `<h2>${request.title}</h2><p>${request.message}</p>`;
+    }
+});
