@@ -5,7 +5,7 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
     if (info.menuItemId == "search") {
         console.log(info.selectionText);
         sokord = info.selectionText.toLowerCase();
-        apiRequest(info.selectionText.toLowerCase(), "context");
+        apiRequest(info.selectionText.toLowerCase(), "context", tab);
     }
 });
 
@@ -40,7 +40,7 @@ chrome.notifications.onClicked.addListener(
 );
 */
 //gör en request till API:n med sökordet och få tillbaka definitionen
-function apiRequest(input, source) {
+function apiRequest(input, source, tab) {
 
     fetch("https://sv.wiktionary.org/w/api.php?action=query&prop=extracts&titles=" + input + "&exchars=300&format=json&origin=*", {
         method: "POST"
@@ -69,28 +69,34 @@ function apiRequest(input, source) {
             extract = extract.substring(0, extract.indexOf("<"));
 
             if (source == "context") {
-                const url = chrome.runtime.getURL("result.html") + "?extract=" + encodeURIComponent(extract) + "&header=" + encodeURIComponent(input);
-                chrome.windows.create({ 
-                    url: url,
-                    type: "popup",
-                    width: 350,
-                    height: parseInt(extract.length * 0.5 + 100) 
-                });
+                chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    func: createPopup,
+                    args: [input, extract]
+                    });
             } else if (source == "popup") {
                 chrome.runtime.sendMessage({
                     type: "result",
-                    title: title,
+                    title: input,
                     message: extract
                 });
             }
         })
         .catch((error) => {
-            console.error("Error:", error);
-            chrome.runtime.sendMessage({
-                type: "result",
-                title: "Fel vid sökning",
-                message: "Inga sökresultat."
-            });
+            console.error(error);
+            if (source == "context") {
+                chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    func: createPopup,
+                    args: ["Inga sökresultat för " + input, ""]
+                    });
+            } else if (source == "popup") {
+                chrome.runtime.sendMessage({
+                    type: "result",
+                    title: "Inga sökresultat för " + input,
+                    message: ""
+                });
+            }
         });
 }
 
@@ -102,3 +108,43 @@ chrome.contextMenus.removeAll(function () {
         contexts: ["selection"]
     });
 });
+
+function createPopup(title, extract) {
+    // Skapa popup-behållaren
+    const popup = document.createElement('div');
+    popup.id = 'extension-popup';
+    popup.style.cssText = `
+        font-family: "Segoe UI", sans-serif;
+        position: fixed;
+        top: 50px;
+        right: 50px;
+        width: 350px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        z-index: 10000;
+    `;
+    popup.innerHTML = `<h3>${title}</h3><p>${extract}</p>`;
+    document.body.appendChild(popup);
+
+    // Lägg till en osynlig overlay för att fånga klick utanför popuppen
+    const overlay = document.createElement('div');
+    overlay.id = 'extension-popup-overlay';
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9999;
+    `;
+    document.body.appendChild(overlay);
+
+    // När användaren klickar på overlayn tas popup och overlay bort
+    overlay.addEventListener('click', () => {
+        popup.remove();
+        overlay.remove();
+    });
+}

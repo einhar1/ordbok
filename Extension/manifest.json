@@ -11,7 +11,9 @@
     "author": "Einar Harri",
     "permissions": [
         "contextMenus",
-        "tabs"
+        "tabs",
+        "activeTab",
+        "scripting"
     ],
     "background": {
         "service_worker": "script.js"
